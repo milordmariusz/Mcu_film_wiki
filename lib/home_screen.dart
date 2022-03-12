@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mcu_film_wiki/Models/mcu_model.dart';
 
+import 'details_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -14,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var marvelApiUrl = "https://mcuapi.herokuapp.com/api/v1/movies";
-  List<McuModels> mcuMoviesList = [];
+  static List<McuModels> mcuMoviesList = [];
 
   @override
   void initState() {
@@ -37,25 +39,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisSpacing: 10,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: mcuMoviesList[index].coverUrl != null
-                        ? CachedNetworkImage(
-                            imageUrl: mcuMoviesList[index].coverUrl.toString(),
-                            placeholder: (context, url) =>
-                                Image.asset('images/place_holder.jpg'),
-                          )
-                        : Image.asset('images/place_holder.jpg'),
+                  return GestureDetector(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: mcuMoviesList[index].coverUrl != null
+                          ? CachedNetworkImage(
+                              imageUrl: mcuMoviesList[index].coverUrl.toString(),
+                              placeholder: (context, url) =>
+                                  Image.asset('images/place_holder.jpg'),
+                            )
+                          : Image.asset('images/place_holder.jpg'),
+                    ),
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            //builder: (context) => DetailsScreen(title: mcuMoviesList[index].title.toString(), coverUrl: mcuMoviesList[index].coverUrl.toString() ,)),
+                            builder: (context) => DetailsScreen(mcuMoviesList: mcuMoviesList[index])),
+                      );
+                    },
                   );
                 },
               )
             : Center(
-                child: Container(
-                  width: 50,
-                  height: 50,
                   child: Center(
                       child: CircularProgressIndicator(color: Colors.white70)),
-                ),
               ));
   }
 
