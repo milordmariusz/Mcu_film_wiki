@@ -31,11 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.grey[900],
         body: mcuMoviesList.isNotEmpty
             ? GridView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 15.0),
                 itemCount: mcuMoviesList.length,
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200,
                   childAspectRatio: 2 / 3,
-                  crossAxisSpacing: 10,
+                  crossAxisSpacing: 15,
                   mainAxisSpacing: 10,
                 ),
                 itemBuilder: (BuildContext context, int index) {
@@ -44,26 +45,27 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(20),
                       child: mcuMoviesList[index].coverUrl != null
                           ? CachedNetworkImage(
-                              imageUrl: mcuMoviesList[index].coverUrl.toString(),
+                              imageUrl:
+                                  mcuMoviesList[index].coverUrl.toString(),
                               placeholder: (context, url) =>
                                   Image.asset('images/place_holder.jpg'),
                             )
                           : Image.asset('images/place_holder.jpg'),
                     ),
-                    onTap: (){
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            //builder: (context) => DetailsScreen(title: mcuMoviesList[index].title.toString(), coverUrl: mcuMoviesList[index].coverUrl.toString() ,)),
-                            builder: (context) => DetailsScreen(mcuMoviesList: mcuMoviesList[index])),
+                            builder: (context) => DetailsScreen(
+                                mcuMoviesList: mcuMoviesList[index])),
                       );
                     },
                   );
                 },
               )
             : Center(
-                  child: Center(
-                      child: CircularProgressIndicator(color: Colors.white70)),
+                child: Center(
+                    child: CircularProgressIndicator(color: Colors.white70)),
               ));
   }
 
