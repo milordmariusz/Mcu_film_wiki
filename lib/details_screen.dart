@@ -32,12 +32,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       widget.mcuMoviesList.coverUrl.toString(),
                       width: size.width * 3 / 4,
                     )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
+                  : Image.asset(
                         'images/place_holder.jpg',
-                        width: size.width * 3 / 4,
-                      )),
+                        width: size.width * 2 / 3,
+                      )
             ),
           ),
           SizedBox(height: size.height / 20),
@@ -49,7 +47,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           ),
           SizedBox(height: size.height / 30),
           Text(
-            widget.mcuMoviesList.overview.toString(),
+            widget.mcuMoviesList.overview!= null ? widget.mcuMoviesList.overview.toString() : "N/A",
             style: GoogleFonts.poppins(fontSize: 15, color: Colors.white),
           ),
           SizedBox(height: size.height / 30),
@@ -57,7 +55,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             text: TextSpan(
               children: <TextSpan>[
                 TextSpan(text: "Directed by:  ", style: TextStyle(color: Colors.white)),
-                TextSpan(text: widget.mcuMoviesList.directedBy.toString(), style: TextStyle(color: Colors.orange)),
+                TextSpan(text: (widget.mcuMoviesList.directedBy!= null&&widget.mcuMoviesList.directedBy!= "") ? widget.mcuMoviesList.directedBy.toString() : "N/A", style: TextStyle(color: Colors.orange)),
               ]
             )
           ),
@@ -66,7 +64,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
               text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(text: "Realise date:  ", style: TextStyle(color: Colors.white)),
-                    TextSpan(text: widget.mcuMoviesList.releaseDate.toString(), style: TextStyle(color: Colors.orange)),
+                    TextSpan(text: widget.mcuMoviesList.releaseDate!= null ? widget.mcuMoviesList.releaseDate.toString() : "N/A", style: TextStyle(color: Colors.orange)),
                   ]
               )
           ),
@@ -75,20 +73,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
               text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(text: "Duration: ", style: TextStyle(color: Colors.white)),
-                    TextSpan(text: widget.mcuMoviesList.duration.toString(), style: TextStyle(color: Colors.orange)),
-                    TextSpan(text: " min", style: TextStyle(color: Colors.orange)),
+                    TextSpan(text: widget.mcuMoviesList.duration!= 0 ? widget.mcuMoviesList.duration.toString() + " min" : "N/A", style: TextStyle(color: Colors.orange)),
                   ]
               )
           ),
           SizedBox(height: size.height / 30),
-
           RichText(
               text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(text: "Box office:  ", style: TextStyle(color: Colors.white)),
-                    TextSpan(text: widget.mcuMoviesList.boxOffice.toString(), style: TextStyle(color: Colors.orange)),
-                    TextSpan(text: " \$", style: TextStyle(color: Colors.orange)),
-
+                    TextSpan(text: moneyTransform(), style: TextStyle(color: Colors.orange)),
                   ]
               )
           ),
@@ -97,7 +91,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
               text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(text: "Phase:  ", style: TextStyle(color: Colors.white)),
-                    TextSpan(text: widget.mcuMoviesList.phase.toString(), style: TextStyle(color: Colors.orange)),
+                    TextSpan(text: widget.mcuMoviesList.phase!= null ? widget.mcuMoviesList.phase.toString() : "N/A", style: TextStyle(color: Colors.orange)),
                   ]
               )
           ),
@@ -106,7 +100,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
               text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(text: "Chronology:  ", style: TextStyle(color: Colors.white)),
-                    TextSpan(text: widget.mcuMoviesList.chronology.toString(), style: TextStyle(color: Colors.orange)),
+                    TextSpan(text: widget.mcuMoviesList.chronology!= null ? widget.mcuMoviesList.chronology.toString() : "N/A", style: TextStyle(color: Colors.orange)),
                   ]
               )
           ),
@@ -114,4 +108,33 @@ class _DetailsScreenState extends State<DetailsScreen> {
       ),
     );
   }
+
+  String moneyTransform(){
+    String money=widget.mcuMoviesList.boxOffice.toString();
+    String moneyOutput = "";
+    var moneyLen = money.length;
+    var beforeDot = moneyLen%3;
+    var moneyText = "";
+    if(moneyLen<=3){
+      return "N/A";
+    }
+    if (moneyLen>9){
+      moneyText = "billion";
+    }
+    else if (moneyLen>6){
+      moneyText = "million";
+    }
+    else if (moneyLen>3){
+      moneyText = "thousand";
+    }
+
+    if (beforeDot==0){
+      moneyOutput = "\$"+money.substring(0,3)+" $moneyText";
+    }
+    else{
+      moneyOutput = "\$"+money.substring(0,beforeDot)+"."+money.substring(beforeDot+1,beforeDot+3)+" $moneyText";
+    }
+    return moneyOutput;
+  }
 }
+

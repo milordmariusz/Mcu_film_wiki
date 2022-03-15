@@ -8,6 +8,7 @@ void main(){
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MCUAPI()));
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: []);
   runApp(MCUAPI());
 }
 
